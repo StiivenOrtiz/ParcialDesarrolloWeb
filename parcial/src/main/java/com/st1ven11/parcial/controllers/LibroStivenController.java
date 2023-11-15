@@ -1,6 +1,7 @@
 package com.st1ven11.parcial.controllers;
 
 import com.st1ven11.parcial.DTOs.LibroStivenDTO;
+import com.st1ven11.parcial.models.BibliotecaStiven;
 import com.st1ven11.parcial.models.LibroStiven;
 import com.st1ven11.parcial.services.LibroStivenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -26,23 +28,55 @@ public class LibroStivenController {
     @GetMapping("/getAll")
     public List<LibroStivenDTO> getAllLibros() {
         List<LibroStiven> lista = libroService.getAllLibros();
-        return lista.stream().map(libro -> new LibroStivenDTO(
+
+        // Filtrar los libros que tienen biblioteca no nula
+        List<LibroStiven> librosConBiblioteca = lista.stream()
+                .filter(libro -> libro.getBiblioteca() != null)
+                .toList();
+
+        // Obtener la información básica de cada libro
+        List<LibroStivenDTO> librosDTO = librosConBiblioteca.stream().map(libro -> new LibroStivenDTO(
                 libro.getId(),
                 libro.getNombre(),
                 libro.getAutor(),
-                libro.getId()
+                libro.getBiblioteca().getId(),
+                ""
         )).collect(Collectors.toList());
+
+        // Obtener la información de la biblioteca correspondiente para cada libro
+        Map<Long, BibliotecaStiven> bibliotecasMap = librosConBiblioteca.stream()
+                .collect(Collectors.toMap(
+                        libro -> libro.getBiblioteca().getId(),
+                        LibroStiven::getBiblioteca,
+                        (existing, replacement) -> existing
+                ));
+
+        // Agregar la información de la biblioteca a cada libro
+        librosDTO.forEach(libroDTO -> {
+            BibliotecaStiven biblioteca = bibliotecasMap.get(libroDTO.getBibliotecaId());
+            if (biblioteca != null) {
+                libroDTO.setBibliotecaNombre(biblioteca.getNombre());
+            }
+        });
+
+
+        return librosDTO;
     }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<LibroStivenDTO> getLibroById(@PathVariable Long id) {
         Optional<LibroStiven> libro = libroService.getLibroById(id);
+
         return libro.map(value -> ResponseEntity.ok(
                         new LibroStivenDTO(
                                 value.getId(),
                                 value.getNombre(),
                                 value.getAutor(),
-                                value.getBiblioteca().getId() // Cambia esto según la estructura de tu DTO
+
+                                value.getBiblioteca().getId(),
+                                value.getBiblioteca().getNombre()
                         )
                 ))
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -60,8 +94,7 @@ public class LibroStivenController {
             return ResponseEntity.ok(new LibroStivenDTO(
                     createdLibro.getId(),
                     createdLibro.getNombre(),
-                    createdLibro.getAutor(),
-                    createdLibro.getBiblioteca().getId() // Cambia esto según la estructura de tu DTO
+                    createdLibro.getAutor()
             ));
         } catch (Exception e) {
             e.printStackTrace();

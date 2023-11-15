@@ -39,7 +39,7 @@ public class LibroStivenService {
             updatedLibro.setId(id);
             return libroRepository.save(updatedLibro);
         }
-        return null; // O manejar de otra manera si no se encuentra el libro con el ID especificado
+        return null;
     }
 
     public void deleteLibro(Long id) {
