@@ -1,0 +1,17 @@
+<!-- list-books.component.html -->
+
+<div class="book-list">
+  <h2>Lista de Libros</h2>
+  <ul>
+    <li *ngFor="let book of books">
+      <div class="book-details">
+        <h3>{{ book.nombre }}</h3>
+        <p><strong>Autor:</strong> {{ book.autor }}</p>
+        <p>
+          <strong>Nombre de la biblioteca:</strong> {{ book.bibliotecaNombre }}
+        </p>
+        <p><strong>ID de la Biblioteca:</strong> {{ book.bibliotecaId }}</p>
+      </div>
+    </li>
+  </ul>
+</div>

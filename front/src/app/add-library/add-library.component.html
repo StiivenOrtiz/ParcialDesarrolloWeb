@@ -1,0 +1,39 @@
+<div class="add-library-container">
+  <h2>Agregar Biblioteca</h2>
+  <form (ngSubmit)="onSubmit()" class="library-form">
+    <div class="form-group">
+      <label for="nombre">Nombre:</label>
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        [(ngModel)]="newLibrary.nombre"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="direccion">Dirección:</label>
+      <input
+        type="text"
+        id="direccion"
+        name="direccion"
+        [(ngModel)]="newLibrary.direccion"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="ciudad">Ciudad:</label>
+      <input
+        type="text"
+        id="ciudad"
+        name="ciudad"
+        [(ngModel)]="newLibrary.ciudad"
+        required
+      />
+    </div>
+
+    <button type="submit" class="submit-button">Agregar Biblioteca</button>
+  </form>
+</div>

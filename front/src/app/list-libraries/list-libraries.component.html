@@ -1,0 +1,14 @@
+<!-- list-libraries.component.html -->
+
+<div class="library-list">
+  <h2>Lista de Bibliotecas</h2>
+  <ul>
+    <li *ngFor="let library of libraries">
+      <div class="library-details">
+        <h3>{{ library.nombre }}</h3>
+        <p><strong>Dirección:</strong> {{ library.direccion }}</p>
+        <p><strong>Ciudad:</strong> {{ library.ciudad }}</p>
+      </div>
+    </li>
+  </ul>
+</div>
