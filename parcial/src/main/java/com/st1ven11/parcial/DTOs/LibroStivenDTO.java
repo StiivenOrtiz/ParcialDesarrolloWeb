@@ -17,7 +17,7 @@ public class LibroStivenDTO {
     private String autor;
     private Long bibliotecaId;
     private String bibliotecaNombre;
-    
+
     public LibroStivenDTO() {
 
     }

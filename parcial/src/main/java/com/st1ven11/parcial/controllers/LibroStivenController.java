@@ -29,38 +29,52 @@ public class LibroStivenController {
     public List<LibroStivenDTO> getAllLibros() {
         List<LibroStiven> lista = libroService.getAllLibros();
 
-        // Filtrar los libros que tienen biblioteca no nula
-        List<LibroStiven> librosConBiblioteca = lista.stream()
-                .filter(libro -> libro.getBiblioteca() != null)
-                .toList();
+        //        // imprimir la lista de libros;
+//        lista.forEach(libroStiven -> System.out.println(libroStiven.toString()));
+//
+//        // Filtrar los libros que tienen biblioteca no nula
+//        List<LibroStiven> librosConBiblioteca = lista.stream()
+//                .filter(libro -> libro.getBiblioteca() != null)
+//                .toList();
+//
+//        librosConBiblioteca.forEach(libroStiven -> System.out.println(libroStiven.toString()));
+//
+//
+//        // Obtener la información básica de cada libro
+//        List<LibroStivenDTO> librosDTO = librosConBiblioteca.stream().map(libro -> new LibroStivenDTO(
+//                libro.getId(),
+//                libro.getNombre(),
+//                libro.getAutor(),
+//                libro.getBiblioteca().getId(),
+//                ""
+//        )).collect(Collectors.toList());
+//
+//        // Obtener la información de la biblioteca correspondiente para cada libro
+//        Map<Long, BibliotecaStiven> bibliotecasMap = librosConBiblioteca.stream()
+//                .collect(Collectors.toMap(
+//                        libro -> libro.getBiblioteca().getId(),
+//                        LibroStiven::getBiblioteca,
+//                        (existing, replacement) -> existing
+//                ));
+//
+//        // Agregar la información de la biblioteca a cada libro
+//        librosDTO.forEach(libroDTO -> {
+//            BibliotecaStiven biblioteca = bibliotecasMap.get(libroDTO.getBibliotecaId());
+//            if (biblioteca != null) {
+//                libroDTO.setBibliotecaNombre(biblioteca.getNombre());
+//            }
+//        });
+//
+//        librosDTO.forEach(libroStivenDTO -> System.out.println(libroStivenDTO.toString()));
 
-        // Obtener la información básica de cada libro
-        List<LibroStivenDTO> librosDTO = librosConBiblioteca.stream().map(libro -> new LibroStivenDTO(
+        // imprimir la lista de libros;
+        lista.forEach(libroStiven -> System.out.println(libroStiven.toString()));
+
+        return lista.stream().map(libro -> new LibroStivenDTO(
                 libro.getId(),
                 libro.getNombre(),
-                libro.getAutor(),
-                libro.getBiblioteca().getId(),
-                ""
+                libro.getAutor()
         )).collect(Collectors.toList());
-
-        // Obtener la información de la biblioteca correspondiente para cada libro
-        Map<Long, BibliotecaStiven> bibliotecasMap = librosConBiblioteca.stream()
-                .collect(Collectors.toMap(
-                        libro -> libro.getBiblioteca().getId(),
-                        LibroStiven::getBiblioteca,
-                        (existing, replacement) -> existing
-                ));
-
-        // Agregar la información de la biblioteca a cada libro
-        librosDTO.forEach(libroDTO -> {
-            BibliotecaStiven biblioteca = bibliotecasMap.get(libroDTO.getBibliotecaId());
-            if (biblioteca != null) {
-                libroDTO.setBibliotecaNombre(biblioteca.getNombre());
-            }
-        });
-
-
-        return librosDTO;
     }
 
 
